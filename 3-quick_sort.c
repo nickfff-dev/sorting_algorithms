@@ -1,38 +1,35 @@
-#include <stdio.h>
 #include "sort.h"
 
 /**
-  * quick_sort - the function name
-  * @array: parameter of type int *.
-  * @size: parameter of type size_t .
-  * Return: void .
- */
+* quick_sort - sorts an array of integers in ascending order
+*              using the Quick sort algorithm
+* @array: array of integers
+* @size: size of the array
+*/
 void quick_sort(int *array, size_t size)
 {
 	if (array == NULL || size < 2)
 	{
 		return;
 	}
-	_quick_sort(array, 0, size - 1, size);
+	lomuto_sort(array, 0, size - 1, size);
 }
 /**
-* _quick_sort - Recursive function to perform quick sort
-*
-* @array: Pointer to the array to be sorted
-* @low: Lower index of the partition to be sorted
-* @high: Upper index of the partition to be sorted
-* @size: Size of the array
+* lomuto_sort - sorts a partition of an array of integers
+* @array: array of integers
+* @low: low index of the partition to sort
+* @high: high index of the partition to sort
+* @size: size of the array
 */
-void _quick_sort(int *array, int low, int high, size_t size)
+void lomuto_sort(int *array, int low, int high, size_t size)
 {
-	int pi;
+	int pivot;
 
 	if (low < high)
 	{
-		pi = lomuto_partition(array, low, high, size);
-
-		_quick_sort(array, low, pi - 1, size);
-		_quick_sort(array, pi + 1, high, size);
+		pivot = lomuto_partition(array, low, high, size);
+		lomuto_sort(array, low, pivot - 1, size);
+		lomuto_sort(array, pivot + 1, high, size);
 	}
 }
 
@@ -47,32 +44,38 @@ void _quick_sort(int *array, int low, int high, size_t size)
 int lomuto_partition(int *array, int low, int high, size_t size)
 {
 	int pivot = array[high];
-	int i = low - 1, j;
+	int i = low - 1;
+	int j;
 
-	for (j = low; j <= high - 1; j++)
+	for (j = low; j <= high; j++)
 	{
 		if (array[j] < pivot)
 		{
 			i++;
-			swap(&array[i], &array[j]);
-			print_array(array, size);
+			if (i != j)
+			{
+				swap(&array[i], &array[j]);
+				print_array(array, size);
+			}
 		}
 	}
-	swap(&array[i + 1], &array[high]);
-	print_array(array, size);
+	if (pivot < array[i + 1])
+	{
+		swap(&array[i + 1], &array[high]);
+		print_array(array, size);
+	}
 	return (i + 1);
 }
-
 /**
-  * swap - the function name
-  * @a: parameter of type int *.
-  * @b: parameter of type int *.
-  * Return: void .
- */
+* swap - swaps the values of two integers
+* @a: first integer
+* @b: second integer
+*/
 void swap(int *a, int *b)
 {
-	int temp = *a;
+	int temp;
 
+	temp = *a;
 	*a = *b;
 	*b = temp;
 }
