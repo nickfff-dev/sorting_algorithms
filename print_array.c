@@ -1,4 +1,6 @@
 #include "sort.h"
+#include <stdio.h>
+#include <stdlib.h>
 /**
   * print_array - the function name
   * @array: parameter of type const int *.
